@@ -79,3 +79,59 @@ starwars %>%
 ## se quiséssemos alterar a ordem das barras do gráfico anterior, precisamos mudar a ordem dos 
 ## níveis do fator sex.
 
+# Mudando a ordem dos níveis de um fator ---------------------------------------------------------------------------------------------------
+
+## Para mudar a ordem dos níveis de um fator, podemos utilizar a função lvls_reorder(). 
+## Basta passarmos qual a nova ordem dos fatores, com relação à ordem anterior. No exemplo 
+## abaixo definimos que, na nova ordem,
+
+## - a primeira posição terá o nível que estava na terceira posição na ordem antiga;
+## - a segunda posição terá o nível que estava na primeira posição na ordem antiga;
+## - a terceira posição terá o nível que estava na quarta posição na ordem antiga;
+## - a quarta posição terá o nível que estava na segunda posição na ordem antiga.
+
+lvls_reorder(fator_sex, c(3, 1, 4, 2))
+
+## Assim, poderíamos usar essa nova ordem para ordenar as colunas do nosso gráfico.
+
+starwars %>% 
+  filter(!is.na(sex)) %>% 
+  count(sex) %>% 
+  mutate(
+    sex = lvls_revalue(sex, c("Fêmea", "Hermafrodita", "Macho", "Nenhum")),
+    sex = lvls_reorder(sex, c(3, 1, 4, 2))
+  ) %>% 
+  ggplot() +
+  geom_col(aes(x = sex, y = n)) 
+
+## O que queremos é que os níveis da coluna sex sejam ordenados segundo os valores da 
+## coluna n, isto é, quem tiver o maior valor de n deve ser o primeiro nível, o segundo 
+## maior valor de n seja o segundo nível e assim por diante.
+
+## Podemos melhorar esse código utilizando a função fct_reorder(). Com ela, em vez de 
+## definirmos na mão a ordem dos níveis do fator, podemos ordená-lo segundo valores de 
+## uma segunda variável.
+
+starwars %>% 
+  filter(!is.na(sex)) %>% 
+  count(sex) %>% 
+  mutate(
+    sex = lvls_revalue(sex, c("Fêmea", "Hermafrodita", "Macho", "Nenhum")),
+    sex = fct_reorder(sex, n)
+  ) %>% 
+  ggplot() +
+  geom_col(aes(x = sex, y = n)) 
+
+## É quase o que queríamos! O problema é que os níveis estão sendo ordenados de forma 
+## crescente e gostaríamos de ordenar na ordem decrescente. Para isso, basta utilizarmos 
+## o parâmetro .desc.
+
+starwars %>% 
+  filter(!is.na(sex)) %>% 
+  count(sex) %>% 
+  mutate(
+    sex = lvls_revalue(sex, c("Fêmea", "Hermafrodita", "Macho", "Nenhum")),
+    sex = fct_reorder(sex, n, .desc = TRUE)
+  ) %>% 
+  ggplot() +
+  geom_col(aes(x = sex, y = n)) 
