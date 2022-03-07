@@ -174,3 +174,37 @@ starwars %>%
   ) %>% 
 ggplot() +
   geom_boxplot(aes(x = sex, y = height))
+
+# Colapsando níveis de um fator ------------------------------------------------------------------------------------------------------------
+
+## Imagine que quermos fazer um gráfico de barras com a frequência de personagens por espécie.
+
+starwars %>% 
+  ggplot(aes(x = species)) +
+  geom_bar()
+
+## O gráfico resultante é horrível, pois temos muitas espécies diferentes. Uma solução 
+## seria agrupar as espécies menos frequentes, criando uma nova categoria (outras, por exemplo).
+
+## Para isso, podemos usar a função fct_lump(). Vamos fazer isso primeiro com o vetor de espécies.
+
+fator_especies <- as.factor(starwars$species)
+fator_especies
+
+## Temos 37 espécies diferentes na base. Podemos deixar apenas as 3 mais frequentes da seguinte 
+## forma:
+
+fct_lump(fator_especies, n = 3)
+
+## O fator resultante possui 4 níveis: Droid, Gungan, Human e Other. Os 3 primeiros níveis 
+## são os mais frequentes, enquanto o nível Other foi atribuído a todos os outros 34 níveis 
+## que existiam anteiormente.
+
+## Poderíamos definir o nome do nível Others usando o argumento other_level.
+
+fct_lump(fator_especies, n = 3, other_level = "Outras espécies")
+
+## Também podemos transformar em Outras os níveis cuja frequência relativa é menor que um 
+## determinado limite, por exemplo, 2%. No exemplo abaixo, apenas espécies que representam 
+## mais de 2% dos personagem na base são mantidas. As demais foram transformadas em Outras.
+
