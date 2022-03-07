@@ -226,3 +226,19 @@ starwars %>%
   ) %>% 
   ggplot(aes(x = species)) +
   geom_bar()
+
+## Também é possível colapsar níveis criando manualmente os grupos. Para isso, 
+## utilizamos a função fct_collapse(). No exemplo a seguir, reclassificamos os 
+## níveis da variável eye_color. Os níveis não listados são reclassificados como "outros".
+
+fator_cor_olhos <- as.factor(starwars$eye_color)
+
+fct_collapse(
+  fator_cor_olhos,
+  preto = "black",
+  castanho = c("brown", "hazel"),
+  azul_verde = c("blue", "green"),
+  exotico = c("pink", "red", "white"),
+  colorido = c("red, blue", "green, yellow"),
+  other_level = "outros"
+)
