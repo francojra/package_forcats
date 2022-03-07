@@ -135,3 +135,42 @@ starwars %>%
   ) %>% 
   ggplot() +
   geom_col(aes(x = sex, y = n)) 
+
+## Se em vez de construirmos um gráfico de barras da frequência da variável sex, construíssemos 
+## boxplots da altura para cada sexo diferente, teríamos o gráfico a seguir.
+
+starwars %>% 
+  filter(!is.na(sex)) %>% 
+  ggplot() +
+  geom_boxplot(aes(x = sex, y = height))
+
+## Se quiséssemos ordenar cada boxplot (pela mediana, por exemplo), continuamos podendo usar 
+## a função fct_reorder(). Veja que ela possui o argumento .fun, que indica qual função será 
+## utilizada na variável secundária para determinar a ordem dos níveis.
+
+## No exemplo abaixo, utilizamos .fun = median, o que significa que, para cada nível da variável 
+## sex, vamos calcular a mediana da variável height e ordenaremos os níveis de sex conforme a 
+## ordem dessas medianas.
+
+## Se quiséssemos ordenar de forma decrescente, bastaria utilizar o argumento .desc = TRUE.
+
+starwars %>% 
+  filter(!is.na(sex)) %>% 
+  mutate(
+    sex = lvls_revalue(sex, c("Fêmea", "Hermafrodita", "Macho", "Nenhum")),
+    sex = fct_reorder(sex, height, .fun = median, na.rm = TRUE)
+  ) %>% 
+ggplot() +
+  geom_boxplot(aes(x = sex, y = height))
+
+## Também poderíamos ordenar pelo máximo, utilizando .fun = max. Neste argumento, podemos 
+## usar qualquer função sumarizadora: min(), mean(), median(), max(), sd(), var() etc.
+
+starwars %>% 
+  filter(!is.na(sex)) %>% 
+  mutate(
+    sex = lvls_revalue(sex, c("Fêmea", "Hermafrodita", "Macho", "Nenhum")),
+    sex = fct_reorder(sex, height, .fun = max, na.rm = TRUE)
+  ) %>% 
+ggplot() +
+  geom_boxplot(aes(x = sex, y = height))
