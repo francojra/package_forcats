@@ -242,3 +242,32 @@ fct_collapse(
   colorido = c("red, blue", "green, yellow"),
   other_level = "outros"
 )
+
+# Outras funções úteis ---------------------------------------------------------------------------------------------------------------------
+
+## A seguir, listamos outras funções úteis do pacote {forcats}, apresentando exemplos 
+## simples de como usá-las.
+
+fator <- factor(c("a", "b", "a", "c", "c", "a"))
+fator
+
+## fct_c()
+## Junta dois fatores (e seus níveis).
+
+fator2 <- factor(c("d", "e"))
+fct_c(fator, fator2)
+
+## fct_count()
+## Devolve a frequência dos níveis de um vetor.
+
+fct_count(fator)
+
+## fct_expand()
+## Acrescenta níveis a um fator
+
+fct_expand(fator, c("d", "e"))
+
+## fct_rev()
+## Inverte os níveis de um fator.
+
+fct_rev(fator)
