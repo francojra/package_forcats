@@ -33,3 +33,31 @@ library(dplyr)
 
 ## Nos exemplos a seguir, vamos utilizar a base starwars (do pacote {dplyr}) para aprendermos a fazer as 
 ## principais operações com fatores utilizando o pacote {forcats}.
+
+# Modificando níveis de um fator -----------------------------------------------------------------------------------------------------------
+
+## Vamos trabalhar primeiro com a coluna sex, que diz qual é o sexo de cada personagem.
+
+starwars %>% 
+  pull(sex) %>% 
+  unique()
+
+## Vamos criar um objeto com os 16 primeiros valores da coluna sex já transformados em fator.
+
+fator_sex <- starwars %>% 
+  pull(sex) %>% 
+  as.factor() %>% 
+  head(16)
+fator_sex
+
+## Veja que se transformarmos a coluna em fator, esses serão os levels da variável, 
+## não importa se o sub-conjunto que estivermos observando possua ou não todas as categorias.
+
+## Para mudar os níveis de um fator, podemos utilizar a função lvls_revalue(). Veja que, ao 
+## mudarmos os níveis de um fator, o label de cada valor também muda. Os novos valores precisam 
+## ser passados conforme a ordem dos níveis antigos.
+
+lvls_revalue(
+  fator_sex, 
+  new_levels = c("Fêmea", "Hermafrodita", "Macho", "Nenhum")
+)
