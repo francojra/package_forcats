@@ -61,3 +61,21 @@ lvls_revalue(
   fator_sex, 
   new_levels = c("Fêmea", "Hermafrodita", "Macho", "Nenhum")
 )
+
+## Essa função é uma boa alternativa para mudar o nome das categorias de uma variável antes de 
+## construir um gráfico.
+
+starwars %>% 
+  filter(!is.na(sex)) %>% 
+  count(sex) %>% 
+  mutate(
+    sex = lvls_revalue(sex, c("Fêmea", "Hermafrodita", "Macho", "Nenhum"))
+  ) %>% 
+  ggplot() +
+  geom_col(aes(x = sex, y = n)) 
+
+## Como as colunas no gráfico respeitam a ordem dos níveis do fator, não importa a ordem que as 
+## linhas aparecem na tabela, o gráfico sempre será gerado com as colunas na mesma ordem. Assim, 
+## se quiséssemos alterar a ordem das barras do gráfico anterior, precisamos mudar a ordem dos 
+## níveis do fator sex.
+
