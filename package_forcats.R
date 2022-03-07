@@ -208,3 +208,21 @@ fct_lump(fator_especies, n = 3, other_level = "Outras espécies")
 ## determinado limite, por exemplo, 2%. No exemplo abaixo, apenas espécies que representam 
 ## mais de 2% dos personagem na base são mantidas. As demais foram transformadas em Outras.
 
+fct_lump(fator_especies, p = 0.02, other_level = "Outras")
+
+## Com isso, já conseguimos fazer gráficos de barras mais agradáveis.
+
+starwars %>% 
+  filter(!is.na(species)) %>% 
+  mutate(species = fct_lump(species, n = 2)) %>% 
+  ggplot(aes(x = species)) +
+  geom_bar()
+
+starwars %>% 
+  filter(!is.na(species)) %>% 
+  mutate(
+    species = fct_lump(species, p = 0.02),
+    species = fct_infreq(species) # Ordena pela frequência de cada nível
+  ) %>% 
+  ggplot(aes(x = species)) +
+  geom_bar()
